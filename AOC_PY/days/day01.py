@@ -9,20 +9,17 @@ class Day01:
     def __init__(self):
         self.inputs = np.loadtxt(INPUT_PATH, dtype=np.int32)
 
-    @staticmethod
-    def compute(arr: np.ndarray):
-        result = 0
-        for i in range(1, len(arr)):
-            if arr[i] > arr[i - 1]:
-                result += 1
-        return result
-
     def solve1(self):
-        return Day01.compute(self.inputs)
+        return self.solve_general()
 
     def solve2(self):
-        sums = self.inputs[2:] + self.inputs[1:-1] + self.inputs[:-2]
-        return Day01.compute(sums)
+        return self.solve_general(3)
+
+    def solve_general(self, window=1):
+        """Optimized general solution"""
+        if window < 1:
+            raise ValueError(f'Invalid value for "window", allowed values are positive integers, got {window}')
+        return np.count_nonzero(self.inputs[window:] > self.inputs[:-window])
 
 
 def main():
